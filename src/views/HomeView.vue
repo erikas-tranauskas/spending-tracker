@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home container">
     <h1>HomeView loaded</h1>
     <HelloWorld/>
   </div>

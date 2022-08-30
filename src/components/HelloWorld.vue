@@ -13,7 +13,7 @@ import { Options, Vue } from 'vue-class-component';
   }
 })
 export default class HelloWorld extends Vue {
-  msg = 'Hello world component!'
+  msg = 'Hello world component!';
 }
 </script>
 
