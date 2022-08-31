@@ -41,7 +41,9 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
-@Options({})
+@Options({
+  
+})
 export default class App extends Vue {
   created() {
     console.log('App created!');
