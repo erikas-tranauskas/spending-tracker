@@ -1,4 +1,5 @@
 <template>
+  <!-- @todo create header component -->
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
@@ -20,14 +21,19 @@
     </nav>
   </header>
   <router-view/>
-    <footer class="py-5">
-      <div class="container">
-        <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
-          <p>© {{ new Date().getFullYear() }} Spending Tracker</p>
-          <ul class="list-unstyled d-flex">
-            <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="bootstrap-icons.svg#facebook"></use></svg></a></li>
-          </ul>
-        </div>
+  <!-- @todo create footer component -->
+  <footer class="py-5">
+    <div class="container">
+      <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+        <p>© {{ new Date().getFullYear() }} Spending Tracker</p>
+        <ul class="list-unstyled d-flex">
+          <li class="ms-3">
+            <a class="link-dark" href="https://github.com/erikas-tranauskas/spending-tracker" target="_blank">
+              <svg class="bi" width="24" height="24"><use xlink:href="bootstrap-icons.svg#github"></use></svg>
+            </a>
+          </li>
+        </ul>
       </div>
-    </footer>
+    </div>
+  </footer>
 </template>
