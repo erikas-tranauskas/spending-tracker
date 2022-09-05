@@ -1,7 +1,7 @@
 <template>
   <div class="bg-dark text-secondary px-4 py-5 text-center">
     <div class="py-5">
-      <h1 class="display-5 fw-bold text-white">About</h1>
+      <h1 class="display-5 fw-bold text-white">Portfolio</h1>
       <div class="col-lg-6 mx-auto">
         <p class="fs-5 mb-4">Coming soon!</p>
       </div>
@@ -13,5 +13,5 @@
 import { Options, Vue } from 'vue-class-component';
 
 @Options({})
-export default class AboutView extends Vue {}
+export default class PortfolioView extends Vue {}
 </script>
