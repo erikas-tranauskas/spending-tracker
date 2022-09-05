@@ -17,11 +17,7 @@ import Footer from '@/components/Footer.vue';
     Footer,
   },
 })
-export default class App extends Vue {
-  created() {
-    console.log('App created!');
-  }
-}
+export default class App extends Vue {}
 </script>
 
 <style scoped>
