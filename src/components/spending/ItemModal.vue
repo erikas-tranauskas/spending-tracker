@@ -20,7 +20,6 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import type { PropType } from 'vue'
 
 interface ListItem {
   title: string,
@@ -31,7 +30,7 @@ interface ListItem {
 @Options({
   props: {
     currentModalItem: {
-      type: Object as PropType<ListItem>,
+      type: Object as () => ListItem,
     }
   }
 })
