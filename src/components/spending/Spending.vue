@@ -1,6 +1,6 @@
 <template>
-  <p>Organize your spending!</p>
-  <table class="table table-hover table-dark table-striped">
+  <p class="text-center">Organize your spending!</p>
+  <table class="table table-hover table-dark table-striped text-center">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -16,15 +16,17 @@
         <td>{{ item.title }}</td>
         <td>{{ item.amount.toFixed(2) }}</td>
         <td>{{ item.monthlyIncrease.toFixed(2) }}</td>
-        <td><button type="button" @click="setCurrentModalItem(item)" class="btn btn-outline-info btn-lg px-4 fw-bold btn-sm" data-bs-toggle="modal" data-bs-target="#spendingItemModal">Edit</button></td>
+        <td><button type="button" @click="setCurrentModalItem(item)" class="btn btn-outline-info btn-lg px-4 fw-bold btn-sm" data-bs-toggle="modal" :data-bs-target="'#' + listItemModalId">Edit</button></td>
       </tr>
     </tbody>
   </table>
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <button type="button" class="btn btn-outline-info btn-lg px-4 fw-bold btn-sm" data-bs-toggle="modal" data-bs-target="#spendingItemModal">Add new!</button>
+    <button type="button" @click="setCurrentModalItem(null)" class="btn btn-outline-info btn-lg px-4 fw-bold btn-sm" data-bs-toggle="modal" :data-bs-target="'#' + listItemModalId">Add new!</button>
   </div>
   <ItemModal
+    :list-item-modal-id="listItemModalId"
     :current-modal-item="currentModalItem"
+    @updateListItems="updateListItems"
   />
 </template>
 
@@ -50,22 +52,17 @@ export default class Spending extends Vue {
       amount: 20.00,
       monthlyIncrease: 1.00,
     },
-    {
-      title: 'Test 2',
-      amount: 20.00,
-      monthlyIncrease: 1.00,
-    },
-    {
-      title: 'Test 3',
-      amount: 20.00,
-      monthlyIncrease: 1.00,
-    },
   ];
 
   currentModalItem: ListItem | null = null;
+  listItemModalId = 'spendingItemModal';
 
-  setCurrentModalItem(item: ListItem) {
+  setCurrentModalItem(item: ListItem | null) {
     this.currentModalItem = item;
+  }
+
+  updateListItems() {
+    this.listItems.push({ title: 'hello', amount: 20, monthlyIncrease: 1 });
   }
 }
 </script>
