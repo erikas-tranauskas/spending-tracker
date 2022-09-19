@@ -25,7 +25,7 @@
   </div>
   <ItemModal
     :list-item-modal-id="listItemModalId"
-    :current-modal-item="currentModalItem"
+    :current-modal-item="currentModalItem || undefined"
     @updateListItems="updateListItems"
   />
 </template>

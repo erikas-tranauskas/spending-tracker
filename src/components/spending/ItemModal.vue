@@ -54,7 +54,7 @@ interface ListItem {
   emits: ['update-list-items'],
 })
 export default class ItemModal extends Vue {
-  currentModalItem!: ListItem | null;
+  currentModalItem!: ListItem;
   listItemModalId!: string;
 
   saveItem() {
