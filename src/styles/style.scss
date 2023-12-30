@@ -1,0 +1,18 @@
+/* Add the default color for dark theme */
+.svg-fill-dark {
+  fill: white;
+}
+
+/* Add the default color for light theme */
+.svg-fill-light {
+  fill: black;
+}
+
+/* Dynamically adjust the fill color based on the theme class */
+.bi.theme-dark {
+  @extend .svg-fill-dark;
+}
+
+.bi.theme-light {
+  @extend .svg-fill-light;
+}

@@ -1,53 +1,67 @@
 <template>
   <header>
-    <div class="px-3 py-2 bg-dark text-white">
+    <div class="px-3 py-2">
       <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <router-link class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none" to="/">
-            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-              <use xlink:href="bootstrap-icons.svg#bootstrap" />
-            </svg>
-          </router-link>
-          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-            <li v-for="menuItem in menuItems" :key="menuItem.routeName">
+        <header
+          class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
+        >
+          <ul class="nav nav-pills">
+            <li v-for="menuItem in menuItems" :key="menuItem.routeName" class="nav-item">
               <router-link
                 :class="[
                   'nav-link',
                   {
-                    'text-secondary': $route.name !== menuItem.routeName,
-                  },
-                  {
-                    'text-white': $route.name === menuItem.routeName,
+                    active: $route.name === menuItem.routeName,
                   },
                 ]"
                 aria-current="page"
                 :to="menuItem.url"
               >
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24">
-                  <use :xlink:href="'bootstrap-icons.svg#' + menuItem.icon" />
-                </svg>
                 {{ menuItem.title }}
               </router-link>
             </li>
           </ul>
-        </div>
+          <div class="col-md-3 text-end">
+            <button
+              @click="toggleTheme"
+              type="button"
+              :class="[
+                'btn',
+                { 'btn-outline-primary': currentTheme === lightTheme },
+                { 'btn-outline-light': currentTheme === darkTheme },
+              ]"
+            >
+              <i
+                :class="[
+                  'bi',
+                  { 'bi-sun-fill': currentTheme === lightTheme },
+                  { 'bi-sun': currentTheme === darkTheme },
+                ]"
+              ></i>
+            </button>
+          </div>
+        </header>
       </div>
     </div>
   </header>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
+import { Options, Vue } from 'vue-class-component';
 
 interface menuItem {
-  routeName: string
-  url: string
-  icon: string
-  title: string
+  routeName: string;
+  url: string;
+  icon: string;
+  title: string;
 }
 
 @Options({})
 export default class Header extends Vue {
+  lightTheme = 'light';
+  darkTheme = 'dark';
+  currentTheme = null as null | string;
+
   menuItems: menuItem[] = [
     {
       routeName: 'home',
@@ -73,17 +87,27 @@ export default class Header extends Vue {
       icon: 'book',
       title: 'About',
     },
-  ]
+  ];
+
+  mounted(): void {
+    this.currentTheme = this.$store.getters.getCurrentTheme;
+  }
+
+  toggleTheme() {
+    const htmlElement = document.getElementsByTagName('html')[0];
+
+    if (htmlElement) {
+      const themeAttribute = htmlElement.getAttribute('data-bs-theme');
+
+      if (themeAttribute === this.darkTheme) {
+        this.currentTheme = this.lightTheme;
+      } else {
+        this.currentTheme = this.darkTheme;
+      }
+
+      this.$store.commit('setCurrentTheme', this.currentTheme);
+      htmlElement.setAttribute('data-bs-theme', this.currentTheme);
+    }
+  }
 }
 </script>
-
-<style scoped lang="scss">
-.bi {
-  vertical-align: -0.125em;
-  fill: currentColor;
-}
-
-.text-small {
-  font-size: 85%;
-}
-</style>

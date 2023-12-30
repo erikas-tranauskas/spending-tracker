@@ -1,24 +1,37 @@
 <template>
-  <div class="modal fade" :id="listItemModalId" tabindex="-1" aria-labelledby="spendingItemModalLabel" aria-hidden="true">
+  <div
+    class="modal fade"
+    :id="listItemModalId"
+    tabindex="-1"
+    aria-labelledby="spendingItemModalLabel"
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="spendingItemModalLabel">{{ !currentModalItem.title ? 'Add new item' : 'Edit ' + currentModalItem.title }}</h5>
+          <h5 class="modal-title" id="spendingItemModalLabel">
+            {{ !currentModalItem.title ? 'Add new item' : 'Edit ' + currentModalItem.title }}
+          </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form>
             <div class="mb-3">
               <label for="item-title" class="col-form-label">Title:</label>
-              <input type="text" class="form-control" id="item-title" :value="currentModalItem.title">
+              <input type="text" class="form-control" id="item-title" :value="currentModalItem.title" />
             </div>
             <div class="mb-3">
               <label for="item-amount" class="col-form-label">Amount:</label>
-              <input type="text" class="form-control" id="item-amount" :value="currentModalItem.amount">
+              <input type="text" class="form-control" id="item-amount" :value="currentModalItem.amount" />
             </div>
             <div class="mb-3">
               <label for="item-monthly-increase" class="col-form-label">Monthly +:</label>
-              <input type="text" class="form-control" id="item-monthly-increase" :value="currentModalItem.monthlyIncrease">
+              <input
+                type="text"
+                class="form-control"
+                id="item-monthly-increase"
+                :value="currentModalItem.monthlyIncrease"
+              />
             </div>
           </form>
         </div>
@@ -35,9 +48,9 @@
 import { Options, Vue } from 'vue-class-component';
 
 interface ListItem {
-  title: string,
-  amount: number,
-  monthlyIncrease: number,
+  title: string;
+  amount: number;
+  monthlyIncrease: number;
 }
 
 @Options({
@@ -48,7 +61,7 @@ interface ListItem {
     },
     listItemModalId: {
       type: String,
-      default: 'spendingItemModal'
+      default: 'spendingItemModal',
     },
   },
   emits: ['update-list-items'],
@@ -69,6 +82,4 @@ export default class ItemModal extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
