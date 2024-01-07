@@ -17,13 +17,7 @@
         <td>{{ item.amount.toFixed(2) }}</td>
         <td>{{ item.monthlyIncrease.toFixed(2) }}</td>
         <td>
-          <button
-            type="button"
-            @click="setCurrentModalItem(item)"
-            class="btn btn-primary btn-lg px-4 btn-sm"
-            data-bs-toggle="modal"
-            :data-bs-target="'#' + listItemModalId"
-          >
+          <button @click="redirectToItemView(key + 1)" type="button" class="btn btn-primary btn-lg px-4 btn-sm">
             Edit
           </button>
         </td>
@@ -31,26 +25,12 @@
     </tbody>
   </table>
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <button
-      type="button"
-      @click="setCurrentModalItem(null)"
-      class="btn btn-primary btn-lg px-4 btn-sm"
-      data-bs-toggle="modal"
-      :data-bs-target="'#' + listItemModalId"
-    >
-      Add new!
-    </button>
+    <button type="button" @click="redirectToNewItemView" class="btn btn-primary btn-lg px-4 btn-sm">Add new!</button>
   </div>
-  <ItemModal
-    :list-item-modal-id="listItemModalId"
-    :current-modal-item="currentModalItem || undefined"
-    @updateListItems="updateListItems"
-  />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import ItemModal from '@/components/spending/ItemModal.vue';
 
 interface ListItem {
   title: string;
@@ -58,11 +38,7 @@ interface ListItem {
   monthlyIncrease: number;
 }
 
-@Options({
-  components: {
-    ItemModal,
-  },
-})
+@Options({})
 export default class Spending extends Vue {
   listItems: ListItem[] = [
     {
@@ -72,17 +48,12 @@ export default class Spending extends Vue {
     },
   ];
 
-  currentModalItem: ListItem | null = null;
-  listItemModalId = 'spendingItemModal';
-
-  setCurrentModalItem(item: ListItem | null) {
-    this.currentModalItem = item;
+  redirectToNewItemView() {
+    this.$router.push('/spending/new');
   }
 
-  updateListItems() {
-    this.listItems.push({ title: 'hello', amount: 20, monthlyIncrease: 1 });
+  redirectToItemView(id: number) {
+    this.$router.push('/spending/edit/' + id);
   }
 }
 </script>
-
-<style scoped lang="scss"></style>

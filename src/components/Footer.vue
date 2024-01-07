@@ -7,7 +7,7 @@
           <li class="ms-3">
             <a href="https://github.com/erikas-tranauskas/spending-tracker" target="_blank">
               <svg :class="['bi', 'me-2', `theme-${$store.getters.getCurrentTheme}`]" width="30" height="30">
-                <use xlink:href="bootstrap-icons.svg#github"></use>
+                <use xlink:href="/bootstrap-icons.svg#github"></use>
               </svg>
             </a>
           </li>

@@ -52,7 +52,6 @@ import { Options, Vue } from 'vue-class-component';
 interface menuItem {
   routeName: string;
   url: string;
-  icon: string;
   title: string;
 }
 
@@ -66,25 +65,21 @@ export default class Header extends Vue {
     {
       routeName: 'home',
       url: '/',
-      icon: 'house-fill',
       title: 'Home',
     },
     {
       routeName: 'spending',
       url: '/spending',
-      icon: 'coin',
       title: 'Spending',
     },
     {
       routeName: 'portfolio',
       url: '/portfolio',
-      icon: 'currency-bitcoin',
       title: 'Portfolio',
     },
     {
       routeName: 'about',
       url: '/about',
-      icon: 'book',
       title: 'About',
     },
   ];
