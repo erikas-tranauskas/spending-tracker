@@ -1,3 +1,50 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useMainStore } from '@/store';
+import { useRoute } from 'vue-router';
+
+interface MenuItem {
+  routeName: string;
+  url: string;
+  title: string;
+}
+
+const lightTheme = 'light';
+const darkTheme = 'dark';
+
+const store = useMainStore();
+const route = useRoute();
+
+const currentTheme = ref<string | null>(null);
+
+const menuItems: MenuItem[] = [
+  { routeName: 'home', url: '/', title: 'Home' },
+  { routeName: 'spending', url: '/spending', title: 'Spending' },
+  { routeName: 'portfolio', url: '/portfolio', title: 'Portfolio' },
+  { routeName: 'about', url: '/about', title: 'About' },
+];
+
+onMounted(() => {
+  currentTheme.value = store.getCurrentTheme;
+});
+
+function toggleTheme() {
+  const htmlElement = document.getElementsByTagName('html')[0];
+  if (!htmlElement) return;
+
+  const themeAttribute = htmlElement.getAttribute('data-bs-theme');
+
+  if (themeAttribute === darkTheme) {
+    currentTheme.value = lightTheme;
+  } else {
+    currentTheme.value = darkTheme;
+  }
+
+  store.setCurrentTheme(currentTheme.value);
+  htmlElement.setAttribute('data-bs-theme', currentTheme.value as string);
+}
+</script>
+
 <template>
   <header>
     <div class="px-3 py-2">
@@ -11,7 +58,7 @@
                 :class="[
                   'nav-link',
                   {
-                    active: $route.name === menuItem.routeName,
+                    active: String(route.name) === menuItem.routeName,
                   },
                 ]"
                 aria-current="page"
@@ -45,64 +92,3 @@
     </div>
   </header>
 </template>
-
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-
-interface menuItem {
-  routeName: string;
-  url: string;
-  title: string;
-}
-
-@Options({})
-export default class Header extends Vue {
-  lightTheme = 'light';
-  darkTheme = 'dark';
-  currentTheme = null as null | string;
-
-  menuItems: menuItem[] = [
-    {
-      routeName: 'home',
-      url: '/',
-      title: 'Home',
-    },
-    {
-      routeName: 'spending',
-      url: '/spending',
-      title: 'Spending',
-    },
-    {
-      routeName: 'portfolio',
-      url: '/portfolio',
-      title: 'Portfolio',
-    },
-    {
-      routeName: 'about',
-      url: '/about',
-      title: 'About',
-    },
-  ];
-
-  mounted(): void {
-    this.currentTheme = this.$store.getters.getCurrentTheme;
-  }
-
-  toggleTheme() {
-    const htmlElement = document.getElementsByTagName('html')[0];
-
-    if (htmlElement) {
-      const themeAttribute = htmlElement.getAttribute('data-bs-theme');
-
-      if (themeAttribute === this.darkTheme) {
-        this.currentTheme = this.lightTheme;
-      } else {
-        this.currentTheme = this.darkTheme;
-      }
-
-      this.$store.commit('setCurrentTheme', this.currentTheme);
-      htmlElement.setAttribute('data-bs-theme', this.currentTheme);
-    }
-  }
-}
-</script>

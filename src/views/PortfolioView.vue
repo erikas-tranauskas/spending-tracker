@@ -1,3 +1,5 @@
+<script setup lang="ts"></script>
+
 <template>
   <div class="px-4 py-5 text-center">
     <div class="py-5">
@@ -8,10 +10,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component'
-
-@Options({})
-export default class PortfolioView extends Vue {}
-</script>

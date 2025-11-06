@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+interface ListItem {
+  title: string;
+  amount: number;
+  monthlyIncrease: number;
+}
+
+const router = useRouter();
+
+const listItems = ref<ListItem[]>([
+  {
+    title: 'Test 1',
+    amount: 20.0,
+    monthlyIncrease: 1.0,
+  },
+]);
+
+function redirectToNewItemView() {
+  router.push('/spending/new');
+}
+
+function redirectToItemView(id: number) {
+  router.push(`/spending/edit/${id}`);
+}
+</script>
+
 <template>
   <p class="text-center">Organize your spending!</p>
   <table class="table table-hover table-striped text-center">
@@ -28,32 +57,3 @@
     <button type="button" @click="redirectToNewItemView" class="btn btn-primary btn-lg px-4 btn-sm">Add new!</button>
   </div>
 </template>
-
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-
-interface ListItem {
-  title: string;
-  amount: number;
-  monthlyIncrease: number;
-}
-
-@Options({})
-export default class Spending extends Vue {
-  listItems: ListItem[] = [
-    {
-      title: 'Test 1',
-      amount: 20.0,
-      monthlyIncrease: 1.0,
-    },
-  ];
-
-  redirectToNewItemView() {
-    this.$router.push('/spending/new');
-  }
-
-  redirectToItemView(id: number) {
-    this.$router.push('/spending/edit/' + id);
-  }
-}
-</script>

@@ -1,32 +1,26 @@
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useMainStore } from '@/store';
+import Header from '@/components/HeaderComponent.vue';
+import Footer from '@/components/FooterComponent.vue';
+
+const store = useMainStore();
+
+onMounted(() => {
+  const htmlElement = document.getElementsByTagName('html')[0];
+  if (htmlElement) {
+    htmlElement.setAttribute('data-bs-theme', store.getCurrentTheme);
+  }
+});
+</script>
+
 <template>
-  <Header />
+  <Header></Header>
   <div class="b-divider"></div>
   <router-view />
   <div class="b-divider"></div>
-  <Footer />
+  <Footer></Footer>
 </template>
-
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer.vue';
-
-@Options({
-  components: {
-    Header,
-    Footer,
-  },
-})
-export default class App extends Vue {
-  mounted(): void {
-    const htmlElement = document.getElementsByTagName('html')[0];
-
-    if (htmlElement) {
-      htmlElement.setAttribute('data-bs-theme', this.$store.getters.getCurrentTheme);
-    }
-  }
-}
-</script>
 
 <style scoped>
 .b-divider {

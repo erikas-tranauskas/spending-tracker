@@ -6,7 +6,7 @@ import PortfolioView from '../views/PortfolioView.vue';
 import SpendingNewItemView from '../views/SpendingNewItemView.vue';
 import SpendingItemView from '../views/SpendingItemView.vue';
 
-const routes: Array<RouteRecordRaw> = [
+const routes = [
   {
     path: '/',
     name: 'home',
