@@ -1,19 +1,48 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useMainStore } from '@/store';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const store = useMainStore();
 
 const title = ref('');
-const amount = ref<number | null>(null);
-const monthlyIncrease = ref<number | null>(null);
+const amount = ref();
+const increase = ref();
+
+const itemId = computed(() => {
+  const routeId = router.currentRoute.value.params.id;
+
+  return routeId == null ? null : Number(routeId);
+});
+
+if (itemId.value) {
+  const existing = (store.getSpendingItems ?? []).find((i) => i.id === itemId.value);
+
+  if (existing) {
+    title.value = existing.title ?? '';
+    amount.value = existing.amount ?? 0;
+    increase.value = existing.increase ?? 0;
+  }
+}
 
 const saveItem = () => {
-  console.log('Saving in progress', {
+  const newItem = {
+    id: itemId.value ?? Date.now(),
     title: title.value,
     amount: amount.value,
-    monthlyIncrease: monthlyIncrease.value,
-  });
+    increase: increase.value,
+  };
+
+  const currentItems = Array.isArray(store.getSpendingItems) ? store.getSpendingItems : [];
+
+  if (itemId.value) {
+    store.editSpendingItem(newItem);
+  } else {
+    store.setSpendingItems([...currentItems, newItem]);
+  }
+
+  router.push('/spending');
 };
 
 const redirectToSpendingView = () => {
@@ -35,14 +64,8 @@ const redirectToSpendingView = () => {
           <input v-model.number="amount" name="item-amount" type="number" class="form-control" id="item-amount" />
         </div>
         <div class="mb-3">
-          <label for="item-monthly-increase" class="col-form-label">Monthly +:</label>
-          <input
-            v-model.number="monthlyIncrease"
-            name="item-monthly-increase"
-            type="number"
-            class="form-control"
-            id="item-monthly-increase"
-          />
+          <label for="item-increase" class="col-form-label">Monthly increase:</label>
+          <input v-model.number="increase" name="item-increase" type="number" class="form-control" id="item-increase" />
         </div>
         <div class="mb-3">
           <button type="button" @click="saveItem" class="btn btn-primary">Save</button>

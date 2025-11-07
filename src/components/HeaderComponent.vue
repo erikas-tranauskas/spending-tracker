@@ -21,16 +21,17 @@ const menuItems: MenuItem[] = [
   { routeName: 'home', url: '/', title: 'Home' },
   { routeName: 'spending', url: '/spending', title: 'Spending' },
   { routeName: 'portfolio', url: '/portfolio', title: 'Portfolio' },
-  { routeName: 'about', url: '/about', title: 'About' },
 ];
 
 onMounted(() => {
   currentTheme.value = store.getCurrentTheme;
 });
 
-function toggleTheme() {
+const toggleTheme = () => {
   const htmlElement = document.getElementsByTagName('html')[0];
-  if (!htmlElement) return;
+  if (!htmlElement) {
+    return;
+  }
 
   const themeAttribute = htmlElement.getAttribute('data-bs-theme');
 
@@ -42,7 +43,7 @@ function toggleTheme() {
 
   store.setCurrentTheme(currentTheme.value);
   htmlElement.setAttribute('data-bs-theme', currentTheme.value as string);
-}
+};
 </script>
 
 <template>
