@@ -1,14 +1,15 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import AboutView from '../views/AboutView.vue';
-import SpendingView from '../views/SpendingView.vue';
-import PortfolioView from '../views/PortfolioView.vue';
-import SpendingNewItemView from '../views/SpendingNewItemView.vue';
-import SpendingItemView from '../views/SpendingItemView.vue';
+import HomeView from '@/views/HomeView.vue';
+import AboutView from '@/views/AboutView.vue';
+import SpendingView from '@/views/SpendingView.vue';
+import PortfolioView from '@/views/PortfolioView.vue';
+import SpendingNewItemView from '@/views/SpendingNewItemView.vue';
+import SpendingItemView from '@/views/SpendingItemView.vue';
 
 const routes = [
   {
     path: '/',
+
     name: 'home',
     component: HomeView,
   },
@@ -40,7 +41,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
 
