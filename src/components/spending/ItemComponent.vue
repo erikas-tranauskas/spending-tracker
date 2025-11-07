@@ -67,9 +67,9 @@ const redirectToSpendingView = () => {
           <label for="item-increase" class="col-form-label">Monthly increase:</label>
           <input v-model.number="increase" name="item-increase" type="number" class="form-control" id="item-increase" />
         </div>
-        <div class="mb-3">
+        <div class="mb-3 d-flex justify-content-end gap-2">
           <button type="button" @click="saveItem" class="btn btn-primary">Save</button>
-          <button type="button" @click="redirectToSpendingView" class="btn btn-secondary float-end">Back</button>
+          <button type="button" @click="redirectToSpendingView" class="btn btn-secondary">Back</button>
         </div>
       </div>
     </form>

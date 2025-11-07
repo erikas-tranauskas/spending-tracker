@@ -41,7 +41,7 @@ const handleIncrease = (item: ListItem) => {
         <th scope="col">Title</th>
         <th scope="col">Amount</th>
         <th scope="col">Monthly increase</th>
-        <th scope="col" style="width: 170px">Actions</th>
+        <th scope="col" style="width: 140px">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -52,14 +52,32 @@ const handleIncrease = (item: ListItem) => {
         <td>{{ item.increase.toFixed(2) }}</td>
         <td>
           <div class="btn-group d-flex d-md-none" role="group" aria-label="Actions">
-            <button @click="handleIncrease(item)" type="button" class="btn btn-success btn-sm">+</button>
-            <button @click="redirectToItemView(item.id)" type="button" class="btn btn-primary btn-sm">Edit</button>
-            <button @click="handleDelete(item.id)" type="button" class="btn btn-secondary btn-sm">Delete</button>
+            <button @click="handleIncrease(item)" type="button" class="btn btn-success btn-sm">
+              <i class="bi bi-plus-lg" aria-hidden="true"></i>
+              <span class="visually-hidden">Increase</span>
+            </button>
+            <button @click="redirectToItemView(item.id)" type="button" class="btn btn-primary btn-sm">
+              <i class="bi bi-pencil" aria-hidden="true"></i>
+              <span class="visually-hidden">Edit</span>
+            </button>
+            <button @click="handleDelete(item.id)" type="button" class="btn btn-secondary btn-sm">
+              <i class="bi bi-trash" aria-hidden="true"></i>
+              <span class="visually-hidden">Delete</span>
+            </button>
           </div>
-          <div class="d-none d-md-flex gap-2" role="group" aria-label="Actions">
-            <button @click="handleIncrease(item)" type="button" class="btn btn-success btn-sm">+</button>
-            <button @click="redirectToItemView(item.id)" type="button" class="btn btn-primary btn-sm">Edit</button>
-            <button @click="handleDelete(item.id)" type="button" class="btn btn-secondary btn-sm">Delete</button>
+          <div class="d-none d-md-flex gap-2 justify-content-end" role="group" aria-label="Actions">
+            <button @click="handleIncrease(item)" type="button" class="btn btn-success btn-sm">
+              <i class="bi bi-plus-lg" aria-hidden="true"></i>
+              <span class="visually-hidden">Increase</span>
+            </button>
+            <button @click="redirectToItemView(item.id)" type="button" class="btn btn-primary btn-sm">
+              <i class="bi bi-pencil" aria-hidden="true"></i>
+              <span class="visually-hidden">Edit</span>
+            </button>
+            <button @click="handleDelete(item.id)" type="button" class="btn btn-secondary btn-sm">
+              <i class="bi bi-trash" aria-hidden="true"></i>
+              <span class="visually-hidden">Delete</span>
+            </button>
           </div>
         </td>
       </tr>
