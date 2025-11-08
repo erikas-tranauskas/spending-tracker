@@ -2,6 +2,9 @@
 import { useMainStore } from '@/store';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { auth } from '@/firebase';
+import { db } from '@/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const router = useRouter();
 const store = useMainStore();
@@ -26,7 +29,7 @@ if (itemId.value) {
   }
 }
 
-const saveItem = () => {
+const saveItem = async () => {
   const newItem = {
     id: itemId.value ?? Date.now(),
     title: title.value,
@@ -41,6 +44,21 @@ const saveItem = () => {
   } else {
     store.setSpendingItems([...currentItems, newItem]);
   }
+
+  // @todo fix this
+  const user = auth.currentUser;
+
+  if (!user) {
+    // @todo show alert
+    throw new Error('No logged-in user');
+  }
+
+  const recordsRef = collection(db, 'users', user.uid, 'spendingItems');
+
+  await addDoc(recordsRef, {
+    ...newItem,
+    createdAt: serverTimestamp(),
+  });
 
   router.push('/spending');
 };
