@@ -35,8 +35,8 @@ async function register(email: string, password: string) {
       <p v-else>Not logged in</p>
       <div class="col-lg-6 mx-auto">
         <p class="fs-5 mb-4">Coming soon!</p>
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-          <button @click="register" type="button" class="btn btn-primary btn-lg px-4 gap-3">Primary</button>
+        <div class="d-grid d-sm-flex justify-content-sm-center gap-2">
+          <button @click="register" type="button" class="btn btn-primary btn-lg gap-3 px-4">Primary</button>
           <button type="button" class="btn btn-outline-secondary btn-lg px-4">Secondary</button>
         </div>
       </div>
