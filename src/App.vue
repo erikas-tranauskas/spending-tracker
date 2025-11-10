@@ -9,11 +9,10 @@ import { Button } from '@/components/ui/button';
   <div>
     <Button>Click me</Button>
   </div>
-  <div class="p-8 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg shadow-lg text-center">
-    <h1 class="text-3xl font-bold mb-4">Tailwind Works 🎉</h1>
+  <div class="rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 p-8 text-center text-white shadow-lg">
+    <h1 class="mb-4 text-3xl font-bold">Tailwind Works 🎉</h1>
     <p class="text-lg">If you see gradient background, rounded corners, and white text — it’s working!</p>
   </div>
   <RouterView />
   <Footer />
 </template>
-
