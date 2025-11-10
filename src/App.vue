@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import Header from '@/components/HeaderComponent.vue';
-import Footer from '@/components/FooterComponent.vue';
-import { Button } from '@/components/ui/button';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import AppSidebar from '@/components/AppSidebar.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
+import HeaderComponent from '@/components/HeaderComponent.vue';
 </script>
 
 <template>
-  <Header />
-  <div>
-    <Button>Click me</Button>
-  </div>
-  <div class="rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 p-8 text-center text-white shadow-lg">
-    <h1 class="mb-4 text-3xl font-bold">Tailwind Works 🎉</h1>
-    <p class="text-lg">If you see gradient background, rounded corners, and white text — it’s working!</p>
-  </div>
-  <RouterView />
-  <Footer />
+  <SidebarProvider>
+    <div class="flex min-h-screen w-full bg-background">
+      <AppSidebar />
+      <div class="flex w-full flex-1 flex-col">
+        <HeaderComponent />
+        <main>
+          <RouterView />
+        </main>
+        <FooterComponent />
+      </div>
+    </div>
+  </SidebarProvider>
 </template>
