@@ -16,7 +16,6 @@ const currentYear = new Date().getFullYear();
           <li class="ms-3">
             <a href="https://github.com/erikas-tranauskas/spending-tracker" target="_blank" rel="noopener noreferrer">
               <svg :class="['bi', 'me-2', `theme-${currentTheme}`]" width="30" height="30">
-                <use xlink:href="/bootstrap-icons.svg#github"></use>
               </svg>
             </a>
           </li>
@@ -25,9 +24,3 @@ const currentYear = new Date().getFullYear();
     </div>
   </footer>
 </template>
-
-<style scoped lang="scss">
-.bi {
-  vertical-align: -0.125em;
-}
-</style>
