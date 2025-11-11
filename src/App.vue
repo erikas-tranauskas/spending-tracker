@@ -8,10 +8,11 @@ import HeaderComponent from '@/components/HeaderComponent.vue';
 <template>
   <SidebarProvider>
     <div class="flex min-h-screen w-full bg-background">
+      <!--@todo add props-->
       <AppSidebar />
       <div class="flex w-full flex-1 flex-col">
         <HeaderComponent />
-        <main>
+        <main class="container mx-auto flex-1 px-4 py-8">
           <RouterView />
         </main>
         <FooterComponent />
