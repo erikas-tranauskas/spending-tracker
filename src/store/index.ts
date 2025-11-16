@@ -2,13 +2,11 @@ import { ListItem } from '@/components/spending/types';
 import { defineStore } from 'pinia';
 
 interface State {
-  currentTheme: string;
   spendingItems: ListItem[];
 }
 
 export const useMainStore = defineStore('main', {
   state: (): State => ({
-    currentTheme: localStorage.getItem('currentTheme') ?? 'light',
     spendingItems: (() => {
       try {
         const raw = localStorage.getItem('spendingItems');
@@ -22,26 +20,16 @@ export const useMainStore = defineStore('main', {
   }),
 
   getters: {
-    getCurrentTheme: (state) => state.currentTheme,
     getSpendingItems: (state) => state.spendingItems,
   },
 
   actions: {
-    setCurrentTheme(currentTheme: string) {
-      this.currentTheme = currentTheme;
-      localStorage.setItem('currentTheme', currentTheme);
-    },
-
-    async setCurrentThemeAsync(currentTheme: string) {
-      this.setCurrentTheme(currentTheme);
-    },
-
     setSpendingItems(spendingItems: ListItem[]) {
       this.spendingItems = spendingItems;
       localStorage.setItem('spendingItems', JSON.stringify(spendingItems));
     },
 
-    deleteSpendingItem(id: number) {
+    deleteSpendingItem(id: string) {
       this.spendingItems = this.spendingItems.filter((item) => item.id !== id);
       localStorage.setItem('spendingItems', JSON.stringify(this.spendingItems));
     },

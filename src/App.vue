@@ -3,6 +3,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import AppSidebar from '@/components/AppSidebar.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import HeaderComponent from '@/components/HeaderComponent.vue';
+import Toaster from '@/components/ui/toast/Toaster.vue';
 </script>
 
 <template>
@@ -15,6 +16,7 @@ import HeaderComponent from '@/components/HeaderComponent.vue';
         <main class="container mx-auto flex-1 px-4 py-8">
           <RouterView />
         </main>
+        <Toaster />
         <FooterComponent />
       </div>
     </div>
