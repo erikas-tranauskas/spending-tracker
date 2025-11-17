@@ -20,7 +20,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue', 'emitSaveAction']);
+const emit = defineEmits(['update:modelValue', 'emitCreateAction', 'emitUpdateAction']);
 
 const internalOpen = ref(props.modelValue);
 
@@ -31,15 +31,33 @@ watch(
   }
 );
 
+watch(
+  () => props.item,
+  (newValue) => {
+    formData.value = {
+      id: newValue?.id ? newValue.id : '',
+      name: newValue?.title ? newValue.title : '',
+      amount: newValue?.amount ? newValue.amount : undefined,
+      increase: newValue?.increase ? newValue.increase : undefined,
+    };
+  }
+);
+
 watch(internalOpen, (value) => {
+  errors.value = {
+    name: '',
+    amount: '',
+    increase: '',
+  };
+
   emit('update:modelValue', value);
 });
 
-const formData = ref({
+const formData = ref<{ id: string; name: string; amount: number | undefined; increase: number | undefined }>({
   id: '',
   name: '',
-  amount: '',
-  increase: '',
+  amount: undefined,
+  increase: undefined,
 });
 
 const errors = ref({
@@ -49,22 +67,44 @@ const errors = ref({
 });
 
 const saveItem = async () => {
+  errors.value = {
+    name: '',
+    amount: '',
+    increase: '',
+  };
+
+  if (!formData.value.name.trim()) {
+    errors.value.name = 'Name is required';
+  }
+
+  if (!formData.value.amount) {
+    errors.value.amount = 'Amount is required';
+  }
+
+  if (!formData.value.increase) {
+    errors.value.increase = 'Increase is required';
+  }
+
+  if (errors.value.name || errors.value.amount || errors.value.increase) {
+    return;
+  }
+
   const newItem: ListItem = {
     id: formData.value.id ?? Date.now(),
     title: formData.value.name,
-    amount: formData.value.amount,
-    increase: formData.value.increase,
+    amount: formData.value.amount ?? 0,
+    increase: formData.value.increase ?? 0,
   };
 
   const currentItems = Array.isArray(store.getSpendingItems) ? store.getSpendingItems : [];
 
   if (props.item) {
     store.editSpendingItem(newItem);
+    emit('emitUpdateAction', newItem);
   } else {
     store.setSpendingItems([...currentItems, newItem]);
+    emit('emitCreateAction', newItem);
   }
-
-  emit('emitSaveAction', newItem);
 };
 </script>
 

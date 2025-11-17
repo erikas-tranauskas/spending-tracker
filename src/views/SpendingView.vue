@@ -86,6 +86,16 @@ const listItemsOffline = computed<ListItem[]>(() => {
   return Array.isArray(items) ? items : [];
 });
 
+const handleDialogOpen = (item?: ListItem) => {
+  if (item) {
+    selectedItem.value = { ...item };
+  } else {
+    selectedItem.value = null;
+  }
+
+  isDialogOpen.value = true;
+};
+
 const handleDelete = async (item: ListItem) => {
   store.deleteSpendingItem(item.id);
 
@@ -111,7 +121,65 @@ const handleDelete = async (item: ListItem) => {
 const handleIncrease = async (item: ListItem) => {
   item.amount += item.increase;
   store.editSpendingItem(item);
+  await updateDocument(item);
 
+  toast({
+    title: `${item.title} updated successfully`,
+    description: `Amount increased to ${item.amount}`,
+  });
+};
+
+const handleUpdate = async (item: ListItem) => {
+  store.editSpendingItem(item);
+  await updateDocument(item);
+
+  isDialogOpen.value = false;
+
+  const index = listItems.value.findIndex((i) => i.id === item.id);
+
+  if (index !== -1) {
+    listItems.value[index] = item;
+  }
+
+  toast({
+    title: `${item.title} updated successfully`,
+    description: 'Data updated',
+  });
+};
+
+const handleSave = async (item: ListItem) => {
+  const user = auth.currentUser;
+
+  if (!user) {
+    toast({
+      variant: 'destructive',
+      title: 'User not found',
+      description: 'Please try again later',
+    });
+
+    return;
+  }
+
+  const recordsRef = collection(db, 'users', user.uid, 'spendingItems');
+
+  const docRef = await addDoc(recordsRef, {
+    ...item,
+    createdAt: serverTimestamp(),
+  });
+
+  item.id = docRef.id;
+
+  isDialogOpen.value = false;
+
+  toast({
+    title: 'New item added',
+    description: item.title,
+  });
+
+  listItems.value.push(item);
+};
+
+const updateDocument = async (item: ListItem) => {
   const user = auth.currentUser;
 
   if (!user) {
@@ -132,54 +200,6 @@ const handleIncrease = async (item: ListItem) => {
     increase: item.increase,
     updatedAt: serverTimestamp(),
   });
-
-  toast({
-    title: `${item.title} updated successfully`,
-    description: `Amount increased to ${item.amount}`,
-  });
-};
-
-const handleEdit = (item?: ListItem) => {
-  if (item) {
-    selectedItem.value = { ...item };
-  } else {
-    selectedItem.value = null;
-  }
-
-  isDialogOpen.value = true;
-};
-
-const handleSave = async (item: ListItem) => {
-  const user = auth.currentUser;
-
-  if (!user) {
-    toast({
-      variant: 'destructive',
-      title: 'User not found',
-      description: 'Please try again later',
-    });
-
-    return;
-  }
-
-  const recordsRef = collection(db, 'users', user.uid, 'spendingItems');
-
-  // @todo or update existing
-  const docRef = await addDoc(recordsRef, {
-    ...item,
-    createdAt: serverTimestamp(),
-  });
-
-  item.id = docRef.id;
-
-  isDialogOpen.value = false;
-
-  toast({
-    title: 'New item added',
-    description: item.title,
-  });
-
-  listItems.value.push(item);
 };
 </script>
 
@@ -228,7 +248,7 @@ const handleSave = async (item: ListItem) => {
                   <Plus class="h-3.5 w-3.5" />
                   Add
                 </Button>
-                <Button @click="handleEdit(item)" size="sm" variant="outline" class="h-8 gap-1">
+                <Button @click="handleDialogOpen(item)" size="sm" variant="outline" class="h-8 gap-1">
                   <Edit class="h-3.5 w-3.5" />
                   Edit
                 </Button>
@@ -247,9 +267,14 @@ const handleSave = async (item: ListItem) => {
         </TableBody>
       </Table>
     </div>
-    <AddEditDialog v-model="isDialogOpen" :item="selectedItem" @emit-save-action="handleSave" />
+    <AddEditDialog
+      v-model="isDialogOpen"
+      :item="selectedItem"
+      @emit-create-action="handleSave"
+      @emit-update-action="handleUpdate"
+    />
     <div class="mt-4 flex justify-end">
-      <Button @click="handleEdit(undefined)">New</Button>
+      <Button @click="handleDialogOpen(undefined)">New</Button>
     </div>
   </div>
 </template>
