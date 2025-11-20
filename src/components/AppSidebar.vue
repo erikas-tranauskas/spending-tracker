@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/sidebar';
 import { useColorMode } from '@vueuse/core';
 import type { Component } from 'vue';
+import { useRoute } from 'vue-router';
 
 interface MenuItem {
   routeName: string;
@@ -29,10 +30,16 @@ const menuItems: MenuItem[] = [
 ];
 
 const { open } = useSidebar();
+const route = useRoute();
+
 const mode = useColorMode();
 
 const toggleTheme = () => {
   mode.value = mode.value === 'dark' ? 'light' : 'dark';
+};
+
+const isActive = (item: MenuItem) => {
+  return route.path === item.url;
 };
 </script>
 
@@ -49,6 +56,7 @@ const toggleTheme = () => {
                   :key="item.title"
                   :to="item.url"
                   class="flex w-full items-center gap-2 rounded p-2 hover:bg-accent hover:text-accent-foreground"
+                  :class="isActive(item) ? 'bg-accent text-accent-foreground' : ''"
                 >
                   <component :is="item.icon" class="h-4 w-4" />
                   <span v-if="open">{{ item.title }}</span>

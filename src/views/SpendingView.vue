@@ -206,7 +206,7 @@ const updateDocument = async (item: ListItem) => {
 <template>
   <div class="mb-6">
     <h2 class="mb-2 text-3xl font-bold text-foreground">Spending</h2>
-    <p class="text-muted-foreground">View and manage your items with detailed information and actions</p>
+    <p class="text-muted-foreground">Track and manage your items with ease</p>
   </div>
   <div class="space-y-4">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -215,7 +215,7 @@ const updateDocument = async (item: ListItem) => {
         <p class="text-3xl font-bold text-foreground">{{ totalAmount }}</p>
       </div>
       <div class="rounded-lg border bg-card p-6 shadow-sm">
-        <p class="mb-1 text-sm text-muted-foreground">Total Increase</p>
+        <p class="mb-1 text-sm text-muted-foreground">Total Monthly Increase</p>
         <p class="text-3xl font-bold text-success">+{{ totalIncrease }}</p>
       </div>
     </div>
@@ -225,7 +225,7 @@ const updateDocument = async (item: ListItem) => {
           <TableRow class="border-border bg-muted/50">
             <TableHead class="font-semibold">Name</TableHead>
             <TableHead class="font-semibold">Amount</TableHead>
-            <TableHead class="font-semibold">Increase</TableHead>
+            <TableHead class="font-semibold">Monthly Increase</TableHead>
             <TableHead class="text-right font-semibold">Actions</TableHead>
           </TableRow>
         </TableHeader>
