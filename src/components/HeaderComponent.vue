@@ -7,7 +7,9 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
     <div class="container mx-auto px-4 py-4">
       <div class="flex items-center gap-3">
         <SidebarTrigger />
-        <h1 class="text-2xl font-bold text-foreground">WealthWise</h1>
+        <router-link :to="{ name: 'home' }">
+          <h1 class="text-2xl font-bold text-foreground">WealthWise</h1>
+        </router-link>
       </div>
     </div>
   </header>
