@@ -1,0 +1,45 @@
+{
+  "spending": {
+    "title": "Spending",
+    "description": "Track and manage your items with ease",
+    "totalAmount": "Total Amount",
+    "totalMonthlyIncrease": "Total Monthly Increase",
+    "name": "Name",
+    "amount": "Amount",
+    "monthlyIncrease": "Monthly Increase",
+    "increase": "Increase",
+    "actions": "Actions",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "new": "New",
+    "addNew": "Add new item",
+    "newItemAdded": "New item added",
+    "dataUpdated": "Data updated",
+    "updateSuccess": "{item} updated successfully",
+    "amountIncreased": "Amount increased to {amount}",
+    "errors": {
+      "userNotFound": "User not found",
+      "errorFetch": "Error fetching spending items",
+      "tryAgain": "Please try again later",
+      "localSave": "Data saved locally"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "amountRequired": "Amount is required",
+      "increaseRequired": "Increase is required"
+    }
+  },
+  "buttons": {
+    "save": "Save",
+    "close": "Close"
+  },
+  "menu": {
+    "home": "Home",
+    "spending": "Spending",
+    "portfolio": "Portfolio"
+  },
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
+  "copyright": "All rights reserved"
+}

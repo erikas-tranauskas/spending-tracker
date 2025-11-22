@@ -19,9 +19,11 @@ import {
   orderBy,
 } from 'firebase/firestore';
 import { useToast } from '@/components/ui/toast/use-toast';
+import { useI18n } from 'vue-i18n';
 
 const store = useMainStore();
 const { toast } = useToast();
+const { t } = useI18n();
 const isDialogOpen = ref(false);
 const listItems = ref<ListItem[]>([]);
 const selectedItem = ref<ListItem | null>(null);
@@ -42,6 +44,12 @@ const totalAmount = computed(() => {
 
 const totalIncrease = computed(() => {
   return listItems.value.reduce((sum, item) => sum + Number(item.increase), 0);
+});
+
+const listItemsOffline = computed<ListItem[]>(() => {
+  const items = store.getSpendingItems ?? [];
+
+  return Array.isArray(items) ? items : [];
 });
 
 const fetchUserSpendingItems = async () => {
@@ -72,19 +80,13 @@ const fetchUserSpendingItems = async () => {
   } catch (error) {
     toast({
       variant: 'destructive',
-      title: 'Error fetching spending items',
-      description: 'Please try again later',
+      title: t('spending.errors.errorFetch'),
+      description: t('spending.errors.tryAgain'),
     });
 
     listItems.value = [];
   }
 };
-
-const listItemsOffline = computed<ListItem[]>(() => {
-  const items = store.getSpendingItems ?? [];
-
-  return Array.isArray(items) ? items : [];
-});
 
 const handleDialogOpen = (item?: ListItem) => {
   if (item) {
@@ -104,9 +106,11 @@ const handleDelete = async (item: ListItem) => {
   if (!user) {
     toast({
       variant: 'destructive',
-      title: 'User not found',
-      description: 'Please try again later',
+      title: t('spending.errors.userNotFound'),
+      description: t('spending.errors.localSave'),
     });
+
+    listItems.value = listItems.value.filter((currentItem) => currentItem.id !== item.id);
 
     return;
   }
@@ -124,8 +128,8 @@ const handleIncrease = async (item: ListItem) => {
   await updateDocument(item);
 
   toast({
-    title: `${item.title} updated successfully`,
-    description: `Amount increased to ${item.amount}`,
+    title: t('spending.updateSuccess', { item: item.title }),
+    description: t('spending.amountIncreased', { amount: item.amount }),
   });
 };
 
@@ -142,8 +146,8 @@ const handleUpdate = async (item: ListItem) => {
   }
 
   toast({
-    title: `${item.title} updated successfully`,
-    description: 'Data updated',
+    title: t('spending.updateSuccess', { item: item.title }),
+    description: t('spending.dataUpdated'),
   });
 };
 
@@ -153,9 +157,12 @@ const handleSave = async (item: ListItem) => {
   if (!user) {
     toast({
       variant: 'destructive',
-      title: 'User not found',
-      description: 'Please try again later',
+      title: t('spending.errors.userNotFound'),
+      description: t('spending.errors.localSave'),
     });
+
+    listItems.value.push(item);
+    isDialogOpen.value = false;
 
     return;
   }
@@ -172,7 +179,7 @@ const handleSave = async (item: ListItem) => {
   isDialogOpen.value = false;
 
   toast({
-    title: 'New item added',
+    title: t('spending.newItemAdded'),
     description: item.title,
   });
 
@@ -183,12 +190,6 @@ const updateDocument = async (item: ListItem) => {
   const user = auth.currentUser;
 
   if (!user) {
-    toast({
-      variant: 'destructive',
-      title: 'User not found',
-      description: 'Please try again later',
-    });
-
     return;
   }
 
@@ -205,17 +206,17 @@ const updateDocument = async (item: ListItem) => {
 
 <template>
   <div class="mb-6">
-    <h2 class="mb-2 text-3xl font-bold text-foreground">Spending</h2>
-    <p class="text-muted-foreground">Track and manage your items with ease</p>
+    <h2 class="mb-2 text-3xl font-bold text-foreground">{{ t('spending.title') }}</h2>
+    <p class="text-muted-foreground">{{ t('spending.description') }}</p>
   </div>
   <div class="space-y-4">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
       <div class="rounded-lg border bg-card p-6 shadow-sm">
-        <p class="mb-1 text-sm text-muted-foreground">Total Amount</p>
+        <p class="mb-1 text-sm text-muted-foreground">{{ t('spending.totalAmount') }}</p>
         <p class="text-3xl font-bold text-foreground">{{ totalAmount }}</p>
       </div>
       <div class="rounded-lg border bg-card p-6 shadow-sm">
-        <p class="mb-1 text-sm text-muted-foreground">Total Monthly Increase</p>
+        <p class="mb-1 text-sm text-muted-foreground">{{ t('spending.totalMonthlyIncrease') }}</p>
         <p class="text-3xl font-bold text-success">+{{ totalIncrease }}</p>
       </div>
     </div>
@@ -223,10 +224,10 @@ const updateDocument = async (item: ListItem) => {
       <Table>
         <TableHeader>
           <TableRow class="border-border bg-muted/50">
-            <TableHead class="font-semibold">Name</TableHead>
-            <TableHead class="font-semibold">Amount</TableHead>
-            <TableHead class="font-semibold">Monthly Increase</TableHead>
-            <TableHead class="text-right font-semibold">Actions</TableHead>
+            <TableHead class="font-semibold">{{ t('spending.name') }}</TableHead>
+            <TableHead class="font-semibold">{{ t('spending.amount') }}</TableHead>
+            <TableHead class="font-semibold">{{ t('spending.monthlyIncrease') }}</TableHead>
+            <TableHead class="text-right font-semibold">{{ t('spending.actions') }}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -246,11 +247,11 @@ const updateDocument = async (item: ListItem) => {
               <div class="flex justify-end gap-2">
                 <Button @click="handleIncrease(item)" size="sm" variant="outline" class="h-8 gap-1">
                   <Plus class="h-3.5 w-3.5" />
-                  Add
+                  {{ t('spending.add') }}
                 </Button>
                 <Button @click="handleDialogOpen(item)" size="sm" variant="outline" class="h-8 gap-1">
                   <Edit class="h-3.5 w-3.5" />
-                  Edit
+                  {{ t('spending.edit') }}
                 </Button>
                 <Button
                   @click="handleDelete(item)"
@@ -259,7 +260,7 @@ const updateDocument = async (item: ListItem) => {
                   class="h-8 gap-1 hover:bg-destructive hover:text-destructive-foreground"
                 >
                   <Trash2 class="h-3.5 w-3.5" />
-                  Delete
+                  {{ t('spending.delete') }}
                 </Button>
               </div>
             </TableCell>
@@ -274,7 +275,7 @@ const updateDocument = async (item: ListItem) => {
       @emit-update-action="handleUpdate"
     />
     <div class="mt-4 flex justify-end">
-      <Button @click="handleDialogOpen(undefined)">New</Button>
+      <Button @click="handleDialogOpen(undefined)">{{ t('spending.new') }}</Button>
     </div>
   </div>
 </template>

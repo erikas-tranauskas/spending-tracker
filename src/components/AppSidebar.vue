@@ -15,6 +15,7 @@ import {
 import { useColorMode } from '@vueuse/core';
 import type { Component } from 'vue';
 import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 interface MenuItem {
   routeName: string;
@@ -23,16 +24,16 @@ interface MenuItem {
   icon: Component;
 }
 
-const menuItems: MenuItem[] = [
-  { routeName: 'home', url: '/', title: 'Home', icon: House },
-  { routeName: 'spending', url: '/spending', title: 'Spending', icon: Wallet },
-  { routeName: 'portfolio', url: '/portfolio', title: 'Portfolio', icon: PieChart },
-];
-
 const { open } = useSidebar();
 const route = useRoute();
-
+const { t } = useI18n();
 const mode = useColorMode();
+
+const menuItems: MenuItem[] = [
+  { routeName: 'home', url: '/', title: t('menu.home'), icon: House },
+  { routeName: 'spending', url: '/spending', title: t('menu.spending'), icon: Wallet },
+  { routeName: 'portfolio', url: '/portfolio', title: t('menu.portfolio'), icon: PieChart },
+];
 
 const toggleTheme = () => {
   mode.value = mode.value === 'dark' ? 'light' : 'dark';
@@ -72,11 +73,11 @@ const isActive = (item: MenuItem) => {
         <SidebarMenuButton @click="toggleTheme">
           <template v-if="mode === 'dark'">
             <Sun class="h-4 w-4" />
-            <span v-if="open">Light Mode</span>
+            <span v-if="open">{{ t('lightMode') }}</span>
           </template>
           <template v-else>
             <Moon class="h-4 w-4" />
-            <span v-if="open">Dark Mode</span>
+            <span v-if="open">{{ t('darkMode') }}</span>
           </template>
         </SidebarMenuButton>
       </SidebarMenuItem>

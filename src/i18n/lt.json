@@ -1,0 +1,45 @@
+{
+  "spending": {
+    "title": "Išlaidos",
+    "description": "Lengvai stebėkite ir valdykite savo išlaidas",
+    "totalAmount": "Bendra suma",
+    "totalMonthlyIncrease": "Bendras mėnesinis padidėjimas",
+    "name": "Pavadinimas",
+    "amount": "Suma",
+    "monthlyIncrease": "Mėnesinis padidėjimas",
+    "increase": "Padidėjimas",
+    "actions": "Veiksmai",
+    "add": "Pridėti",
+    "edit": "Redaguoti",
+    "delete": "Ištrinti",
+    "new": "Naujas",
+    "addNew": "Pridėti naują įrašą",
+    "newItemAdded": "Naujas įrašas pridėtas",
+    "dataUpdated": "Duomenys atnaujinti",
+    "updateSuccess": "{item} sėkmingai atnaujintas",
+    "amountIncreased": "Suma padidinta iki {amount}",
+    "errors": {
+      "userNotFound": "Vartotojas nerastas",
+      "errorFetch": "Klaida gaunant išlaidų įrašus",
+      "tryAgain": "Bandykite dar kartą vėliau",
+      "localSave": "Duomenys išsaugoti naršyklėje"
+    },
+    "validation": {
+      "nameRequired": "Pavadinimas yra privalomas",
+      "amountRequired": "Suma yra privaloma",
+      "increaseRequired": "Padidėjimas yra privalomas"
+    }
+  },
+  "buttons": {
+    "save": "Išsaugoti",
+    "close": "Uždaryti"
+  },
+  "menu": {
+    "home": "Pagrindinis",
+    "spending": "Išlaidos",
+    "portfolio": "Portfelis"
+  },
+  "lightMode": "Šviesus režimas",
+  "darkMode": "Tamsus režimas",
+  "copyright": "Visos teisės saugomos"
+}

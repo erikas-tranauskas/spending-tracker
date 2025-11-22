@@ -6,8 +6,10 @@ import { Label } from 'reka-ui';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ListItem } from '@/components/spending/types';
+import { useI18n } from 'vue-i18n';
 
 const store = useMainStore();
+const { t } = useI18n();
 
 const props = defineProps({
   modelValue: {
@@ -74,15 +76,15 @@ const saveItem = async () => {
   };
 
   if (!formData.value.name.trim()) {
-    errors.value.name = 'Name is required';
+    errors.value.name = t('spending.validation.nameRequired');
   }
 
   if (!formData.value.amount) {
-    errors.value.amount = 'Amount is required';
+    errors.value.amount = t('spending.validation.amountRequired');
   }
 
   if (!formData.value.increase) {
-    errors.value.increase = 'Increase is required';
+    errors.value.increase = t('spending.validation.increaseRequired');
   }
 
   if (errors.value.name || errors.value.amount || errors.value.increase) {
@@ -112,18 +114,18 @@ const saveItem = async () => {
   <Dialog v-model:open="internalOpen">
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>{{ item ? 'Edit' : 'Add New Item' }}</DialogTitle>
+        <DialogTitle>{{ item ? t('spending.edit') : t('spending.addNew') }}</DialogTitle>
       </DialogHeader>
       <div class="grid gap-4 py-4">
         <div class="grid gap-2">
-          <Label for="name">Name</Label>
+          <Label for="name">{{ t('spending.name') }}</Label>
           <Input id="name" v-model="formData.name" :class="errors.name ? 'border-destructive' : ''" />
           <p v-if="errors.name" class="text-sm text-destructive">
             {{ errors.name }}
           </p>
         </div>
         <div class="grid gap-2">
-          <Label for="amount">Amount</Label>
+          <Label for="amount">{{ t('spending.amount') }}</Label>
           <Input
             id="amount"
             type="number"
@@ -135,7 +137,7 @@ const saveItem = async () => {
           </p>
         </div>
         <div class="grid gap-2">
-          <Label for="increase">Increase</Label>
+          <Label for="increase">{{ t('spending.increase') }}</Label>
           <Input
             id="increase"
             type="number"
@@ -148,8 +150,8 @@ const saveItem = async () => {
         </div>
       </div>
       <div class="flex justify-end gap-2">
-        <Button variant="outline" @click="internalOpen = false">Close</Button>
-        <Button @click="saveItem">Save</Button>
+        <Button variant="outline" @click="internalOpen = false">{{ t('buttons.close') }}</Button>
+        <Button @click="saveItem">{{ t('buttons.save') }}</Button>
       </div>
     </DialogContent>
   </Dialog>
