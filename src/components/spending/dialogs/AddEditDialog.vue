@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ListItem } from '@/components/spending/types';
 import { useI18n } from 'vue-i18n';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select';
 
 const store = useMainStore();
 const { t } = useI18n();
@@ -38,6 +39,7 @@ watch(
   (newValue) => {
     formData.value = {
       id: newValue?.id ? newValue.id : '',
+      icon: newValue?.icon ? newValue.icon : '',
       name: newValue?.title ? newValue.title : '',
       amount: newValue?.amount ? newValue.amount : undefined,
       increase: newValue?.increase ? newValue.increase : undefined,
@@ -47,6 +49,7 @@ watch(
 
 watch(internalOpen, (value) => {
   errors.value = {
+    icon: '',
     name: '',
     amount: '',
     increase: '',
@@ -55,14 +58,22 @@ watch(internalOpen, (value) => {
   emit('update:modelValue', value);
 });
 
-const formData = ref<{ id: string; name: string; amount: number | undefined; increase: number | undefined }>({
+const formData = ref<{
+  id: string;
+  icon: string;
+  name: string;
+  amount: number | undefined;
+  increase: number | undefined;
+}>({
   id: '',
+  icon: '',
   name: '',
   amount: undefined,
   increase: undefined,
 });
 
 const errors = ref({
+  icon: '',
   name: '',
   amount: '',
   increase: '',
@@ -70,6 +81,7 @@ const errors = ref({
 
 const saveItem = async () => {
   errors.value = {
+    icon: '',
     name: '',
     amount: '',
     increase: '',
@@ -93,6 +105,7 @@ const saveItem = async () => {
 
   const newItem: ListItem = {
     id: formData.value.id ?? Date.now(),
+    icon: formData.value.icon,
     title: formData.value.name,
     amount: formData.value.amount ?? 0,
     increase: formData.value.increase ?? 0,
@@ -118,8 +131,30 @@ const saveItem = async () => {
       </DialogHeader>
       <div class="grid gap-4 py-4">
         <div class="grid gap-2">
+          <Label for="icon">{{ t('spending.icon') }}</Label>
+          <Select v-model="formData.icon">
+            <SelectTrigger id="icon" :class="errors.icon ? 'border-destructive' : ''">
+              <SelectValue :placeholder="t('spending.icon')" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="food">Food</SelectItem>
+                <SelectItem value="transport">Transport</SelectItem>
+                <SelectItem value="entertainment">Entertainment</SelectItem>
+                <SelectItem value="shopping">Shopping</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div class="grid gap-2">
           <Label for="name">{{ t('spending.name') }}</Label>
-          <Input id="name" v-model="formData.name" :class="errors.name ? 'border-destructive' : ''" />
+          <Input
+            id="name"
+            v-model="formData.name"
+            :class="errors.name ? 'border-destructive' : ''"
+            :placeholder="t('spending.name')"
+          />
           <p v-if="errors.name" class="text-sm text-destructive">
             {{ errors.name }}
           </p>
@@ -131,6 +166,7 @@ const saveItem = async () => {
             type="number"
             v-model="formData.amount"
             :class="errors.amount ? 'border-destructive' : ''"
+            :placeholder="t('spending.amount')"
           />
           <p v-if="errors.amount" class="text-sm text-destructive">
             {{ errors.amount }}
@@ -143,6 +179,7 @@ const saveItem = async () => {
             type="number"
             v-model="formData.increase"
             :class="errors.increase ? 'border-destructive' : ''"
+            :placeholder="t('spending.increase')"
           />
           <p v-if="errors.increase" class="text-sm text-destructive">
             {{ errors.increase }}

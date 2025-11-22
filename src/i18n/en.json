@@ -4,6 +4,7 @@
     "description": "Track and manage your items with ease",
     "totalAmount": "Total Amount",
     "totalMonthlyIncrease": "Total Monthly Increase",
+    "icon": "Icon",
     "name": "Name",
     "amount": "Amount",
     "monthlyIncrease": "Monthly Increase",
