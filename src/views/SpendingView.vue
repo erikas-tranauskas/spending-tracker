@@ -1,5 +1,17 @@
 <script setup lang="ts">
-import { Plus, Edit, Trash2 } from 'lucide-vue-next';
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Car,
+  Clapperboard,
+  ShoppingBag,
+  HeartPulse,
+  Palmtree,
+  Shirt,
+  Home,
+  CircleDot,
+} from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { computed, onMounted, ref } from 'vue';
@@ -20,13 +32,28 @@ import {
 } from 'firebase/firestore';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { useI18n } from 'vue-i18n';
+import DeleteDialog from '@/components/spending/dialogs/DeleteDialog.vue';
 
 const store = useMainStore();
 const { toast } = useToast();
 const { t } = useI18n();
-const isDialogOpen = ref(false);
+const isEditDialogOpen = ref(false);
+const isDeleteDialogOpen = ref(false);
 const listItems = ref<ListItem[]>([]);
 const selectedItem = ref<ListItem | null>(null);
+
+const categories = [
+  { value: 'transport', label: t('spending.categories.transport'), icon: Car },
+  { value: 'entertainment', label: t('spending.categories.entertainment'), icon: Clapperboard },
+  { value: 'shopping', label: t('spending.categories.shopping'), icon: ShoppingBag },
+  { value: 'health', label: t('spending.categories.health'), icon: HeartPulse },
+  { value: 'vacation', label: t('spending.categories.vacation'), icon: Palmtree },
+  { value: 'clothes', label: t('spending.categories.clothes'), icon: Shirt },
+  { value: 'housing', label: t('spending.categories.housing'), icon: Home },
+  { value: 'other', label: t('spending.categories.other'), icon: CircleDot },
+];
+
+const categoryMap = Object.fromEntries(categories.map((cat) => [cat.value, cat]));
 
 onMounted(() => {
   auth.onAuthStateChanged((user) => {
@@ -72,6 +99,7 @@ const fetchUserSpendingItems = async () => {
 
       return {
         id: doc.id,
+        category: data.category as string,
         title: data.title as string,
         amount: data.amount as number,
         increase: data.increase as number,
@@ -88,18 +116,26 @@ const fetchUserSpendingItems = async () => {
   }
 };
 
-const handleDialogOpen = (item?: ListItem) => {
+const handleEditDialogOpen = (item?: ListItem) => {
   if (item) {
     selectedItem.value = { ...item };
   } else {
     selectedItem.value = null;
   }
 
-  isDialogOpen.value = true;
+  isEditDialogOpen.value = true;
+};
+
+const handleDeleteDialogOpen = (item: ListItem) => {
+  selectedItem.value = { ...item };
+
+  isDeleteDialogOpen.value = true;
 };
 
 const handleDelete = async (item: ListItem) => {
   store.deleteSpendingItem(item.id);
+
+  isDeleteDialogOpen.value = false;
 
   const user = auth.currentUser;
 
@@ -137,7 +173,7 @@ const handleUpdate = async (item: ListItem) => {
   store.editSpendingItem(item);
   await updateDocument(item);
 
-  isDialogOpen.value = false;
+  isEditDialogOpen.value = false;
 
   const index = listItems.value.findIndex((i) => i.id === item.id);
 
@@ -162,7 +198,7 @@ const handleSave = async (item: ListItem) => {
     });
 
     listItems.value.push(item);
-    isDialogOpen.value = false;
+    isEditDialogOpen.value = false;
 
     return;
   }
@@ -176,7 +212,7 @@ const handleSave = async (item: ListItem) => {
 
   item.id = docRef.id;
 
-  isDialogOpen.value = false;
+  isEditDialogOpen.value = false;
 
   toast({
     title: t('spending.newItemAdded'),
@@ -224,6 +260,7 @@ const updateDocument = async (item: ListItem) => {
       <Table>
         <TableHeader>
           <TableRow class="border-border bg-muted/50">
+            <TableHead class="font-semibold">{{ t('spending.category') }}</TableHead>
             <TableHead class="font-semibold">{{ t('spending.name') }}</TableHead>
             <TableHead class="font-semibold">{{ t('spending.amount') }}</TableHead>
             <TableHead class="font-semibold">{{ t('spending.monthlyIncrease') }}</TableHead>
@@ -236,6 +273,10 @@ const updateDocument = async (item: ListItem) => {
             :key="item.id"
             className="border-border hover:bg-muted/30 transition-colors"
           >
+            <TableCell class="font-medium">
+              <component :is="categoryMap[item.category]?.icon" class="mr-2 inline-block h-4 w-4" />
+              {{ categoryMap[item.category]?.label }}</TableCell
+            >
             <TableCell class="font-medium">{{ item.title }}</TableCell>
             <TableCell>{{ item.amount }}</TableCell>
             <TableCell>
@@ -249,12 +290,12 @@ const updateDocument = async (item: ListItem) => {
                   <Plus class="h-3.5 w-3.5" />
                   {{ t('spending.add') }}
                 </Button>
-                <Button @click="handleDialogOpen(item)" size="sm" variant="outline" class="h-8 gap-1">
+                <Button @click="handleEditDialogOpen(item)" size="sm" variant="outline" class="h-8 gap-1">
                   <Edit class="h-3.5 w-3.5" />
                   {{ t('spending.edit') }}
                 </Button>
                 <Button
-                  @click="handleDelete(item)"
+                  @click="handleDeleteDialogOpen(item)"
                   size="sm"
                   variant="outline"
                   class="h-8 gap-1 hover:bg-destructive hover:text-destructive-foreground"
@@ -269,13 +310,15 @@ const updateDocument = async (item: ListItem) => {
       </Table>
     </div>
     <AddEditDialog
-      v-model="isDialogOpen"
+      v-model="isEditDialogOpen"
+      :categories="categories"
       :item="selectedItem"
       @emit-create-action="handleSave"
       @emit-update-action="handleUpdate"
     />
+    <DeleteDialog v-model="isDeleteDialogOpen" :item="selectedItem" @emit-confirm-action="handleDelete" />
     <div class="mt-4 flex justify-end">
-      <Button @click="handleDialogOpen(undefined)">{{ t('spending.new') }}</Button>
+      <Button @click="handleEditDialogOpen(undefined)">{{ t('spending.new') }}</Button>
     </div>
   </div>
 </template>

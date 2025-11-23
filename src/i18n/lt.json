@@ -5,7 +5,7 @@
     "totalAmount": "Bendra suma",
     "totalMonthlyIncrease": "Bendras mėnesinis padidėjimas",
     "name": "Pavadinimas",
-    "icon": "Ikona",
+    "category": "Kategorija",
     "amount": "Suma",
     "monthlyIncrease": "Mėnesinis padidėjimas",
     "increase": "Padidėjimas",
@@ -17,6 +17,8 @@
     "addNew": "Pridėti naują įrašą",
     "newItemAdded": "Naujas įrašas pridėtas",
     "dataUpdated": "Duomenys atnaujinti",
+    "confirmation": "Ar esate įsitikinę?",
+    "deletePrompt": "Šis veiksmas ištrins įrašą",
     "updateSuccess": "{item} sėkmingai atnaujintas",
     "amountIncreased": "Suma padidinta iki {amount}",
     "errors": {
@@ -26,13 +28,25 @@
       "localSave": "Duomenys išsaugoti naršyklėje"
     },
     "validation": {
+      "categoryRequired": "Kategorija yra privaloma",
       "nameRequired": "Pavadinimas yra privalomas",
       "amountRequired": "Suma yra privaloma",
       "increaseRequired": "Padidėjimas yra privalomas"
+    },
+    "categories": {
+      "transport": "Transportas",
+      "entertainment": "Pramogos",
+      "shopping": "Apsipirkimas",
+      "health": "Sveikata",
+      "vacation": "Atostogos",
+      "clothes": "Drabužiai",
+      "housing": "Būstas",
+      "other": "Kita"
     }
   },
   "buttons": {
     "save": "Išsaugoti",
+    "confirm": "Patvirtinti",
     "close": "Uždaryti"
   },
   "menu": {

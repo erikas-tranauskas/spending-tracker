@@ -4,7 +4,7 @@
     "description": "Track and manage your items with ease",
     "totalAmount": "Total Amount",
     "totalMonthlyIncrease": "Total Monthly Increase",
-    "icon": "Icon",
+    "category": "Category",
     "name": "Name",
     "amount": "Amount",
     "monthlyIncrease": "Monthly Increase",
@@ -19,6 +19,8 @@
     "dataUpdated": "Data updated",
     "updateSuccess": "{item} updated successfully",
     "amountIncreased": "Amount increased to {amount}",
+    "confirmation": "Are you sure?",
+    "deletePrompt": "This will delete item named",
     "errors": {
       "userNotFound": "User not found",
       "errorFetch": "Error fetching spending items",
@@ -26,13 +28,25 @@
       "localSave": "Data saved locally"
     },
     "validation": {
+      "categoryRequired": "Category is required",
       "nameRequired": "Name is required",
       "amountRequired": "Amount is required",
       "increaseRequired": "Increase is required"
+    },
+    "categories": {
+      "transport": "Transport",
+      "entertainment": "Entertainment",
+      "shopping": "Shopping",
+      "health": "Health",
+      "vacation": "Vacation",
+      "clothes": "Clothes",
+      "housing": "Housing",
+      "other": "Other"
     }
   },
   "buttons": {
     "save": "Save",
+    "confirm": "Confirm",
     "close": "Close"
   },
   "menu": {

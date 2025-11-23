@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { ListItem } from '@/components/spending/types';
 import { useI18n } from 'vue-i18n';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select';
+import type { Component } from 'vue';
 
 const store = useMainStore();
 const { t } = useI18n();
@@ -20,6 +21,10 @@ const props = defineProps({
   item: {
     type: Object as PropType<ListItem | null>,
     default: null,
+  },
+  categories: {
+    type: Array as PropType<{ value: string; label: string; icon: Component }[]>,
+    required: true,
   },
 });
 
@@ -39,7 +44,7 @@ watch(
   (newValue) => {
     formData.value = {
       id: newValue?.id ? newValue.id : '',
-      icon: newValue?.icon ? newValue.icon : '',
+      category: newValue?.category ? newValue.category : '',
       name: newValue?.title ? newValue.title : '',
       amount: newValue?.amount ? newValue.amount : undefined,
       increase: newValue?.increase ? newValue.increase : undefined,
@@ -49,7 +54,7 @@ watch(
 
 watch(internalOpen, (value) => {
   errors.value = {
-    icon: '',
+    category: '',
     name: '',
     amount: '',
     increase: '',
@@ -60,20 +65,20 @@ watch(internalOpen, (value) => {
 
 const formData = ref<{
   id: string;
-  icon: string;
+  category: string;
   name: string;
   amount: number | undefined;
   increase: number | undefined;
 }>({
   id: '',
-  icon: '',
+  category: '',
   name: '',
   amount: undefined,
   increase: undefined,
 });
 
 const errors = ref({
-  icon: '',
+  category: '',
   name: '',
   amount: '',
   increase: '',
@@ -81,11 +86,15 @@ const errors = ref({
 
 const saveItem = async () => {
   errors.value = {
-    icon: '',
+    category: '',
     name: '',
     amount: '',
     increase: '',
   };
+
+  if (!formData.value.category.trim()) {
+    errors.value.category = t('spending.validation.categoryRequired');
+  }
 
   if (!formData.value.name.trim()) {
     errors.value.name = t('spending.validation.nameRequired');
@@ -105,7 +114,7 @@ const saveItem = async () => {
 
   const newItem: ListItem = {
     id: formData.value.id ?? Date.now(),
-    icon: formData.value.icon,
+    category: formData.value.category,
     title: formData.value.name,
     amount: formData.value.amount ?? 0,
     increase: formData.value.increase ?? 0,
@@ -131,21 +140,25 @@ const saveItem = async () => {
       </DialogHeader>
       <div class="grid gap-4 py-4">
         <div class="grid gap-2">
-          <Label for="icon">{{ t('spending.icon') }}</Label>
-          <Select v-model="formData.icon">
-            <SelectTrigger id="icon" :class="errors.icon ? 'border-destructive' : ''">
-              <SelectValue :placeholder="t('spending.icon')" />
+          <Label for="category">{{ t('spending.category') }}</Label>
+          <Select v-model="formData.category">
+            <SelectTrigger id="category" :class="errors.category ? 'border-destructive' : ''">
+              <SelectValue :placeholder="t('spending.category')" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="food">Food</SelectItem>
-                <SelectItem value="transport">Transport</SelectItem>
-                <SelectItem value="entertainment">Entertainment</SelectItem>
-                <SelectItem value="shopping">Shopping</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
+                <SelectItem v-for="category in categories" :key="category.value" :value="category.value">
+                  <div class="flex items-center gap-2">
+                    <component :is="category.icon" class="h-4 w-4" />
+                    <span>{{ category.label }}</span>
+                  </div>
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
+          <p v-if="errors.category" class="text-sm text-destructive">
+            {{ errors.category }}
+          </p>
         </div>
         <div class="grid gap-2">
           <Label for="name">{{ t('spending.name') }}</Label>
