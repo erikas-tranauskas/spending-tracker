@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Sun, Moon, House, Wallet, PieChart } from 'lucide-vue-next';
+import { Sun, Moon, House, Wallet, PieChart, LogInIcon, UserRoundIcon, LogOut } from 'lucide-vue-next';
 import {
   Sidebar,
   SidebarContent,
@@ -14,8 +14,13 @@ import {
 } from '@/components/ui/sidebar';
 import { useColorMode } from '@vueuse/core';
 import type { Component } from 'vue';
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import AccountDialog from '@/components/spending/dialogs/AccountDialog.vue';
+import { useAuth } from '@/composables/useAuth';
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { auth } from '@/firebase';
 
 interface MenuItem {
   routeName: string;
@@ -28,6 +33,8 @@ const { open } = useSidebar();
 const route = useRoute();
 const { t } = useI18n();
 const mode = useColorMode();
+const isAccountDialogOpen = ref(false);
+const { user } = useAuth();
 
 const menuItems: MenuItem[] = [
   { routeName: 'home', url: '/', title: t('menu.home'), icon: House },
@@ -42,13 +49,47 @@ const toggleTheme = () => {
 const isActive = (item: MenuItem) => {
   return route.path === item.url;
 };
+
+const handleSubmit = (data: { email: string; password: string; confirmPassword: string; signup: boolean }) => {
+  if (!data.signup) {
+    login(data.email, data.password);
+  } else {
+    register(data.email, data.password);
+  }
+};
+
+const register = async (email: string, password: string) => {
+  // @todo add localstorage items to Firebase, ask for prompt
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    const token = await user.getIdToken();
+
+    console.log('User registered:', user.uid);
+    console.log('User token:', token);
+  } catch (err) {
+    console.error('Registration failed:', err.message);
+  }
+};
+
+const login = async (email: string, password: string) => {
+  await signInWithEmailAndPassword(auth, email, password); // @todo add error messages
+
+  isAccountDialogOpen.value = false;
+};
+
+const logout = async () => {
+  const auth = getAuth();
+
+  await signOut(auth);
+};
 </script>
 
 <template>
   <Sidebar collapsible="icon">
     <SidebarContent>
       <SidebarGroup>
-        <SidebarGroupLabel>WealthWise</SidebarGroupLabel>
+        <SidebarGroupLabel>{{ t('navigation') }}</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
             <SidebarMenuItem v-for="item in menuItems" :key="item.title">
@@ -62,6 +103,31 @@ const isActive = (item: MenuItem) => {
                   <component :is="item.icon" class="h-4 w-4" />
                   <span v-if="open">{{ item.title }}</span>
                 </router-link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+      <SidebarGroup>
+        <SidebarGroupLabel>{{ t('account') }}</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu v-if="!user">
+            <SidebarMenuItem>
+              <SidebarMenuButton @click="isAccountDialogOpen = true">
+                <LogInIcon class="h-4 w-4" />
+                <span v-if="open">{{ t('account') }}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+          <SidebarMenu v-if="user">
+            <SidebarMenuItem>
+              <SidebarMenuButton class="flex cursor-default items-center gap-2">
+                <UserRoundIcon class="h-4 w-4" />
+                <span class="truncate text-sm" v-if="open">{{ user.email }}</span>
+              </SidebarMenuButton>
+              <SidebarMenuButton @click="logout">
+                <LogOut class="h-4 w-4" />
+                <span v-if="open">{{ t('logout') }}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -83,4 +149,5 @@ const isActive = (item: MenuItem) => {
       </SidebarMenuItem>
     </SidebarFooter>
   </Sidebar>
+  <AccountDialog v-model="isAccountDialogOpen" @submit="handleSubmit" />
 </template>

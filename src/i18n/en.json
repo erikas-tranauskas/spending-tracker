@@ -31,7 +31,12 @@
       "categoryRequired": "Category is required",
       "nameRequired": "Name is required",
       "amountRequired": "Amount is required",
-      "increaseRequired": "Increase is required"
+      "increaseRequired": "Increase is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email",
+      "passwordRequired": "Password is required",
+      "passwordInvalid": "Password must be at least 6 characters",
+      "passwordsDoesNotMatch": "Passwords do not match"
     },
     "categories": {
       "transport": "Transport",
@@ -56,5 +61,16 @@
   },
   "lightMode": "Light Mode",
   "darkMode": "Dark Mode",
-  "copyright": "All rights reserved"
+  "copyright": "All rights reserved",
+  "navigation": "Navigation",
+  "account": "Account",
+  "logout": "Logout",
+  "login": "Login",
+  "register": "Register",
+  "alreadyHaveAnAccount": "Already have an account?",
+  "noAccount": "Don't have an account?",
+  "cancel": "Cancel",
+  "email": "Email",
+  "password": "Password",
+  "confirmPassword": "Confirm Password"
 }

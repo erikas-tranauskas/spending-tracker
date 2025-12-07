@@ -31,7 +31,12 @@
       "categoryRequired": "Kategorija yra privaloma",
       "nameRequired": "Pavadinimas yra privalomas",
       "amountRequired": "Suma yra privaloma",
-      "increaseRequired": "Padidėjimas yra privalomas"
+      "increaseRequired": "Padidėjimas yra privalomas",
+      "emailRequired": "El. paštas yra privalomas",
+      "emailInvalid": "Įveskite tinkamą el. paštą",
+      "passwordRequired": "Slaptažodis yra privalomas",
+      "passwordInvalid": "Slaptažodis turi būti sudarytas bent iš 6 simbolių",
+      "passwordsDoesNotMatch": "Slaptažodžiai nesutampa"
     },
     "categories": {
       "transport": "Transportas",
@@ -56,5 +61,16 @@
   },
   "lightMode": "Šviesus režimas",
   "darkMode": "Tamsus režimas",
-  "copyright": "Visos teisės saugomos"
+  "copyright": "Visos teisės saugomos",
+  "navigation": "Navigacija",
+  "account": "Paskyra",
+  "logout": "Atsijungti",
+  "login": "Prisijungti",
+  "register": "Registruotis",
+  "alreadyHaveAnAccount": "Jau turite paskyrą?",
+  "noAccount": "Neturite paskyros?",
+  "cancel": "Atšaukti",
+  "email": "El. paštas",
+  "password": "Slaptažodis",
+  "confirmPassword": "Pakartoti slaptažodį"
 }
