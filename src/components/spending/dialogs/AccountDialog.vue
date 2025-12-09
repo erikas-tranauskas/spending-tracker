@@ -8,6 +8,7 @@ import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   modelValue: boolean;
+  message: string | null | undefined;
 }>();
 
 const { t } = useI18n();
@@ -100,6 +101,12 @@ const handleSubmit = () => {
           {{ isSignup ? t('register') : t('login') }}
         </DialogTitle>
       </DialogHeader>
+      <div
+        v-if="message"
+        class="rounded-md border border-destructive bg-destructive/10 px-3 py-2 text-sm text-destructive"
+      >
+        {{ message }}
+      </div>
       <div class="grid gap-4 py-4">
         <div class="grid gap-2">
           <Label for="email">{{ t('email') }}</Label>

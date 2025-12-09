@@ -72,5 +72,7 @@
   "cancel": "Cancel",
   "email": "Email",
   "password": "Password",
-  "confirmPassword": "Confirm Password"
+  "confirmPassword": "Confirm Password",
+  "loginFailed": "Login unsuccessful, please check your credentials",
+  "registerFailed": "Registration unsuccessful, please check your credentials"
 }

@@ -32,9 +32,10 @@ interface MenuItem {
 const { open } = useSidebar();
 const route = useRoute();
 const { t } = useI18n();
+const { user } = useAuth();
 const mode = useColorMode();
 const isAccountDialogOpen = ref(false);
-const { user } = useAuth();
+const accountDialogMessage = ref<null | string>(null);
 
 const menuItems: MenuItem[] = [
   { routeName: 'home', url: '/', title: t('menu.home'), icon: House },
@@ -60,22 +61,25 @@ const handleSubmit = (data: { email: string; password: string; confirmPassword: 
 
 const register = async (email: string, password: string) => {
   // @todo add localstorage items to Firebase, ask for prompt
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    const token = await user.getIdToken();
-
-    console.log('User registered:', user.uid);
-    console.log('User token:', token);
-  } catch (err) {
-    console.error('Registration failed:', err.message);
-  }
+  await createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      isAccountDialogOpen.value = false;
+      accountDialogMessage.value = null;
+    })
+    .catch(() => {
+      accountDialogMessage.value = t('registerFailed');
+    });
 };
 
 const login = async (email: string, password: string) => {
-  await signInWithEmailAndPassword(auth, email, password); // @todo add error messages
-
-  isAccountDialogOpen.value = false;
+  await signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      isAccountDialogOpen.value = false;
+      accountDialogMessage.value = null;
+    })
+    .catch(() => {
+      accountDialogMessage.value = t('loginFailed');
+    });
 };
 
 const logout = async () => {
@@ -149,5 +153,5 @@ const logout = async () => {
       </SidebarMenuItem>
     </SidebarFooter>
   </Sidebar>
-  <AccountDialog v-model="isAccountDialogOpen" @submit="handleSubmit" />
+  <AccountDialog v-model="isAccountDialogOpen" @submit="handleSubmit" :message="accountDialogMessage" />
 </template>

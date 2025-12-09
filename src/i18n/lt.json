@@ -72,5 +72,7 @@
   "cancel": "Atšaukti",
   "email": "El. paštas",
   "password": "Slaptažodis",
-  "confirmPassword": "Pakartoti slaptažodį"
+  "confirmPassword": "Pakartoti slaptažodį",
+  "loginFailed": "Prisijungimas nepavyko, patikrinkite prisijungimo duomenis",
+  "registerFailed": "Registracija nepavyko, patikrinkite suvestus duomenis"
 }
