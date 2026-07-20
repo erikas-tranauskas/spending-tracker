@@ -1,4 +1,4 @@
-# spending-tracker
+# Spending Tracker
 
 ## Project setup
 
@@ -27,3 +27,6 @@ npm run lint
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+TODO:
+- Statements import (CSV and PDF);
