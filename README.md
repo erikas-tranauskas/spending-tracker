@@ -28,5 +28,24 @@ npm run lint
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-TODO:
-- Statements import (CSV and PDF);
+Phase 1
+- Goal amount
+- Progress bar
+- Remaining amount
+- Monthly contribution
+- Bank account
+- Investment places with totals
+
+Phase 2
+- History of contributions and withdrawals
+- Charts
+- Estimated completion date
+- Archive completed goals
+- Notes and icons
+
+Phase 3
+- Automatic reminders for monthly contributions
+- Expense importer that can automatically deduct from sinking funds
+- Budget vs actual spending
+- Net worth dashboard combining investments, cash, and sinking funds
+- Analytics (e.g., how consistently you've funded each goal)
